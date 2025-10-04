@@ -34,7 +34,13 @@ print("All packages installed and imported!")
 # ---------------------------
 print("\nPlease upload your Airbnb CSV dataset.")
 uploaded = files.upload()
-df = pd.read_csv(io.BytesIO(list(uploaded.values())[0]))
+
+file_name = list(uploaded.keys())[0]
+if file_name.endswith('.xlsx'):
+    df = pd.read_excel(io.BytesIO(uploaded[file_name]))
+else:
+    df = pd.read_csv(io.BytesIO(uploaded[file_name]))
+
 print("Dataset loaded! Shape:", df.shape)
 display(df.head())
 
@@ -124,3 +130,4 @@ fig.update_layout(title='Interactive Price vs Guest Rating by Location')
 fig.show()
 
 print("\nAirbnb analysis completed successfully!")
+
