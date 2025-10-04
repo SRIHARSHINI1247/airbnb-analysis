@@ -45,20 +45,23 @@ print("Dataset loaded! Shape:", df.shape)
 display(df.head())
 
 # ---------------------------
-# Step 3: Data Cleaning
+# Step 3: Data Cleaning & Column Mapping
 # ---------------------------
-# Map your dataset columns to the script's expected columns
-df.rename(columns={
+# Map dataset columns to expected names
+column_mapping = {
     'last review': 'booking_date',
     'review rate number': 'guest_rating',
-    'price': 'price',  # adjust if your dataset has a different column for price
-    'neighbourhood': 'location'
-}, inplace=True)
+    'neighbourhood': 'location',
+    'price': 'price'  # adjust if your dataset uses a different column for price
+}
+df.rename(columns=column_mapping, inplace=True)
 
 # Convert types
 df['booking_date'] = pd.to_datetime(df['booking_date'], errors='coerce')
 df['price'] = pd.to_numeric(df['price'], errors='coerce')
 df['guest_rating'] = pd.to_numeric(df['guest_rating'], errors='coerce')
+
+# Drop rows with missing critical values
 df.dropna(subset=['booking_date', 'location', 'price', 'guest_rating'], inplace=True)
 print("Data cleaned! Remaining rows:", len(df))
 
