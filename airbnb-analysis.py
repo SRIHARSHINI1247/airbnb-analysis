@@ -32,7 +32,7 @@ print("All packages installed and imported!")
 # ---------------------------
 # Step 2: Upload Dataset
 # ---------------------------
-print("\nPlease upload your Airbnb CSV dataset.")
+print("\nPlease upload your Airbnb Excel/CSV dataset.")
 uploaded = files.upload()
 
 file_name = list(uploaded.keys())[0]
@@ -47,6 +47,15 @@ display(df.head())
 # ---------------------------
 # Step 3: Data Cleaning
 # ---------------------------
+# Map your dataset columns to the script's expected columns
+df.rename(columns={
+    'last review': 'booking_date',
+    'review rate number': 'guest_rating',
+    'price': 'price',  # adjust if your dataset has a different column for price
+    'neighbourhood': 'location'
+}, inplace=True)
+
+# Convert types
 df['booking_date'] = pd.to_datetime(df['booking_date'], errors='coerce')
 df['price'] = pd.to_numeric(df['price'], errors='coerce')
 df['guest_rating'] = pd.to_numeric(df['guest_rating'], errors='coerce')
@@ -130,4 +139,3 @@ fig.update_layout(title='Interactive Price vs Guest Rating by Location')
 fig.show()
 
 print("\nAirbnb analysis completed successfully!")
-
